@@ -2,19 +2,17 @@ import { Router } from "express";
 import passport from "passport";
 
 import {
+  registerUser,
   failRegister,
   loginUser,
   logoutUser,
-  registerUser,
   updatePassword,
 } from "../controllers/users.controller.js";
 
 const usersRouter = Router();
 
 usersRouter.get("/", async (req, res) => {
-  return res
-    .status(200)
-    .send({ status: "success", message: "Hello!" });
+  return res.status(200).send({ status: "success", message: "Hello!" });
 });
 
 usersRouter.post(

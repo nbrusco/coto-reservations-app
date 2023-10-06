@@ -92,30 +92,30 @@ export const logoutUser = async (req, res) => {
 };
 
 export const updatePassword = async (req, res) => {
-    try {
-      const { password, token } = req.body
-  
-      if (!password || !token) {
-        return res.status(400).send({
-          status: 'error',
-          error: 'Incomplete values'
-        })
-      }
-  
-      const passwordUpdate = await userService.updatePassword(token, password)
-  
-      if (!passwordUpdate) {
-        return res
-          .status(500)
-          .send({ status: 'error', error: 'Failed to update password' })
-      }
-  
-      return res.status(200).send({
-        status: 'success',
-        message: 'Successfully updated password'
-      })
-    } catch (error) {
-      console.error(`Failed to restore user password: ${error}`)
-      return res.status(500).send({ status: 'error', error: `${error}` })
+  try {
+    const { password, token } = req.body;
+
+    if (!password || !token) {
+      return res.status(400).send({
+        status: "error",
+        error: "Incomplete values",
+      });
     }
+
+    const passwordUpdate = await userService.updatePassword(token, password);
+
+    if (!passwordUpdate) {
+      return res
+        .status(500)
+        .send({ status: "error", error: "Failed to update password" });
+    }
+
+    return res.status(200).send({
+      status: "success",
+      message: "Successfully updated password",
+    });
+  } catch (error) {
+    console.error(`Failed to restore user password: ${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
   }
+};

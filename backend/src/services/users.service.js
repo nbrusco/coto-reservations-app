@@ -23,13 +23,13 @@ export default class UserService {
     }
   }
 
-  async checkExistingUser (email) {
+  async checkExistingUser(email) {
     try {
-      const user = await userDao.getUser({ email })
-      if (user) throw new Error(`User with email ${email} already exists`)
-      return user
+      const user = await userDao.getUser({ email });
+      if (user) throw new Error(`User with email ${email} already exists`);
+      return user;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 

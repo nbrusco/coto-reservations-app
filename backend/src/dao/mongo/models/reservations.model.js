@@ -11,9 +11,22 @@ const reservationSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  guestQuantity: {
+  createdAt: {
+    type: Date,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  guests: {
     type: Number,
     required: true,
+  },
+  code: {
+    type: String,
+    unique: true,
+    required: true
   },
   commentaries: String,
 });

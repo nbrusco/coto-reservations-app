@@ -22,7 +22,7 @@ const env = async () => {
   app.use(cors());
   initializePassport();
 
-  database.connect()
+  database.connect();
 
   routerAPI(app);
 
