@@ -9,6 +9,7 @@ import routerAPI from "./routes/routes.js";
 
 import { config } from "./config/config.js";
 import initializePassport from "./auth/passport.js";
+import database from "./database/db.js";
 
 const { PORT } = config;
 
@@ -19,7 +20,9 @@ const env = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
   app.use(cors());
-  initializePassport()
+  initializePassport();
+
+  database.connect()
 
   routerAPI(app);
 
