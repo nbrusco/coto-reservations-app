@@ -16,7 +16,7 @@ export default class UserService {
   async getUser(email) {
     try {
       const user = await userDao.getUser({ email });
-      if (!user) throw new Error(`User with email ${email} does not exist`);
+      if (!user) throw new Error(`El usuario ${email} no existe`);
       return user;
     } catch (error) {
       throw error;
@@ -26,7 +26,7 @@ export default class UserService {
   async checkExistingUser(email) {
     try {
       const user = await userDao.getUser({ email });
-      if (user) throw new Error(`User with email ${email} already exists`);
+      if (user) throw new Error(`El usuario ${email} ya existe`);
       return user;
     } catch (error) {
       throw error;
@@ -43,7 +43,7 @@ export default class UserService {
       const token = jwt.sign(jwtUser, JWT_SECRET, {
         expiresIn: expireTime,
       });
-      if (!token) throw new Error("Auth token signing failed");
+      if (!token) throw new Error("Falló la firma del token de autorización");
 
       return token;
     } catch (error) {
@@ -54,15 +54,14 @@ export default class UserService {
   async registerUser(newUser) {
     try {
       const user = await userDao.registerUser(newUser);
-      if (!user) throw new Error("Error trying to create user");
+      if (!user) throw new Error("Error en la creación del usuario");
 
       const userDTO = new UserDTO(user);
-      const { email, name, role } = userDTO;
+      // const { email, name, role } = userDTO;
 
       return user;
     } catch (error) {
-      console.log(error);
-      return null;
+      throw error;
     }
   }
 
@@ -77,24 +76,28 @@ export default class UserService {
       });
       const { email } = decodedToken;
       if (Date.now() / 1000 > decodedToken.exp) {
-        throw new Error("Token has expired. Request another restore link.");
+        throw new Error(
+          "El token expiró, solicita otro enlace de recuperación."
+        );
       }
 
       const user = await userDao.getUser({ email });
       const samePass = this.passwordValidate(user, password);
       if (samePass) {
-        throw new Error("Password must be different from the actual one.");
+        throw new Error("La contraseña debe ser distinta a la actual.");
       }
 
       const hashedPassword = createHash(password);
-      if (!hashedPassword) throw new Error("Password hashing failed");
+      if (!hashedPassword) throw new Error("Falló el cifrado de la contraseña");
 
       const passwordUpdate = await userDao.updateUser(
         { email },
         { password: hashedPassword }
       );
       if (!passwordUpdate) {
-        throw new Error(`Password update failed for ${email}`);
+        throw new Error(
+          `Falló la actualización de la contraseña para ${email}`
+        );
       }
       return passwordUpdate;
     } catch (error) {
@@ -105,7 +108,7 @@ export default class UserService {
   async deleteUser(uid) {
     try {
       const deletedUser = await userDao.deleteUser(uid);
-      if (!deletedUser) throw new Error(`Error deleting user ${uid}`);
+      if (!deletedUser) throw new Error(`Error borrando el usuario ${uid}`);
 
       return deletedUser;
     } catch (error) {
@@ -120,7 +123,7 @@ export default class UserService {
         { last_connection: new Date() }
       );
       if (!connection_updated)
-        throw new Error("Error updating user's last connection");
+        throw new Error("Error actualizando la última conexión del usuario");
 
       return connection_updated;
     } catch (error) {

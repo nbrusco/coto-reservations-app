@@ -8,7 +8,7 @@ class User {
       const user = await userModel.findOne(query);
       return user;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -17,7 +17,7 @@ class User {
       const newUser = await userModel.create(user);
       return newUser;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -26,7 +26,7 @@ class User {
       const updatedUser = await userModel.updateOne(query, update);
       return updatedUser;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -35,7 +35,7 @@ class User {
       const deletedUser = await userModel.deleteOne({ _id: userId });
       return deletedUser;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 }

@@ -7,7 +7,7 @@ export const getReservation = async (req, res) => {
     if (!rid) {
       return res.status(400).send({
         status: "error",
-        error: "Incomplete values",
+        error: "Valores incompletos",
       });
     }
 
@@ -16,7 +16,7 @@ export const getReservation = async (req, res) => {
     if (!reservation) {
       return res.status(404).send({
         status: "error",
-        error: "Reservation not found",
+        error: "No se encontró la reserva",
       });
     }
 
@@ -25,11 +25,8 @@ export const getReservation = async (req, res) => {
       payload: reservation,
     });
   } catch (error) {
-    console.error(`Cannot get reservation with mongoose ${error}`);
-    return res.status(500).send({
-      status: "error",
-      error: "Failed to get reservation",
-    });
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
   }
 };
 
@@ -40,7 +37,7 @@ export const getReservations = async (req, res) => {
     if (!reservations) {
       return res.status(404).send({
         status: "error",
-        error: "Reservations not found",
+        error: "No se encontraron reservas",
       });
     }
 
@@ -49,11 +46,8 @@ export const getReservations = async (req, res) => {
       payload: reservations,
     });
   } catch (error) {
-    console.error(`Cannot get reservations with mongoose ${error}`);
-    return res.status(500).send({
-      status: "error",
-      error: "Failed to get reservations",
-    });
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
   }
 };
 
@@ -64,7 +58,7 @@ export const getReservationsByEmail = async (req, res) => {
     if (!email) {
       return res.status(400).send({
         status: "error",
-        error: "Incomplete values",
+        error: "Valores incompletos",
       });
     }
 
@@ -73,7 +67,7 @@ export const getReservationsByEmail = async (req, res) => {
     if (!reservations) {
       return res.status(404).send({
         status: "error",
-        error: "Reservations not found",
+        error: "No se encontraron reservas para dicho usuario",
       });
     }
 
@@ -82,11 +76,8 @@ export const getReservationsByEmail = async (req, res) => {
       payload: reservations,
     });
   } catch (error) {
-    console.error(`Cannot get reservations with mongoose ${error}`);
-    return res.status(500).send({
-      status: "error",
-      error: "Failed to get reservations",
-    });
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
   }
 };
 
@@ -98,14 +89,14 @@ export const appointReservation = async (req, res) => {
     if (!token) {
       return res.status(400).send({
         status: "error",
-        error: "Failed to get token",
+        error: "Error al obtener token de autorización",
       });
     }
 
     if (!email || !date || !type || !guests) {
       return res.status(400).send({
         status: "error",
-        error: "Incomplete values",
+        error: "Valores incompletos",
       });
     }
 
@@ -120,17 +111,14 @@ export const appointReservation = async (req, res) => {
     if (!appointedReservation) {
       return res.status(404).send({
         status: "error",
-        error: "Failed to appoint reservation",
+        error: "Error al realizar reserva",
       });
     }
 
     res.status(201).send({ status: "success", payload: appointedReservation });
   } catch (error) {
-    console.error(`Cannot appoint reservation with mongoose ${error}`);
-    return res.status(500).send({
-      status: "error",
-      error: "Failed to appoint reservation",
-    });
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
   }
 };
 
@@ -142,7 +130,7 @@ export const updateReservation = async (req, res) => {
     if (!updateReserv || !updateId) {
       return res.status(400).send({
         status: "error",
-        error: "Incomplete values",
+        error: "Valores incompletos",
       });
     }
 
@@ -154,7 +142,7 @@ export const updateReservation = async (req, res) => {
     if (!updatedReservation) {
       return res.status(404).send({
         status: "error",
-        error: "Failed to update reservation",
+        error: "Error al actualizar reserva",
       });
     }
 
@@ -163,11 +151,8 @@ export const updateReservation = async (req, res) => {
       payload: updatedReservation,
     });
   } catch (error) {
-    console.error(`Cannot update reservation with mongoose ${error}`);
-    return res.status(500).send({
-      status: "error",
-      error: "Failed to update reservation",
-    });
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
   }
 };
 
@@ -178,7 +163,7 @@ export const deleteReservation = async (req, res) => {
     if (!deleteId) {
       return res.status(400).send({
         status: "error",
-        error: "Incomplete values",
+        error: "Valores incompletos",
       });
     }
 
@@ -189,7 +174,7 @@ export const deleteReservation = async (req, res) => {
     if (!deletedReservation) {
       return res.status(404).send({
         status: "error",
-        error: "Failed to delete reservation",
+        error: "Error al eliminar reserva",
       });
     }
 
@@ -198,10 +183,7 @@ export const deleteReservation = async (req, res) => {
       payload: deletedReservation,
     });
   } catch (error) {
-    console.error(`Cannot delete reservation with mongoose ${error}`);
-    return res.status(500).send({
-      status: "error",
-      error: "Failed to delete reservation",
-    });
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
   }
 };

@@ -8,7 +8,7 @@ export default class ReservationService {
   async getReservation(code) {
     try {
       const reservation = await reservationDao.getReservation(code);
-      if (!reservation) throw new Error("No reservation found");
+      if (!reservation) throw new Error("No se encontró la reserva");
 
       return reservation;
     } catch (error) {
@@ -19,7 +19,7 @@ export default class ReservationService {
   async getReservations() {
     try {
       const reservations = await reservationDao.getReservations();
-      if (!reservations) throw new Error("No reservations found");
+      if (!reservations) throw new Error("No se encontraron reservas");
 
       return reservations;
     } catch (error) {
@@ -30,7 +30,8 @@ export default class ReservationService {
   async getReservationsByEmail(email) {
     try {
       const reservations = await reservationDao.getReservationsByEmail(email);
-      if (!reservations.length) throw new Error(`No reservations found for ${email}`);
+      if (!reservations.length)
+        throw new Error(`No se encontraron reservas de ${email}`);
 
       return reservations;
     } catch (error) {
@@ -57,7 +58,7 @@ export default class ReservationService {
         reservation
       );
       if (!newReservation)
-        throw new Error(`Error appointing reservation with given data`);
+        throw new Error(`No se pudo realizar la reserva. Intente nuevamente`);
 
       return newReservation;
     } catch (error) {
@@ -73,7 +74,9 @@ export default class ReservationService {
       );
 
       if (!updatedReservation) {
-        throw new Error(`Error updating reservation with code: ${updateId}`);
+        throw new Error(
+          `No se pudo actualizar la reserva ${updateId}. Intente nuevamente`
+        );
       }
 
       return updatedReservation;
@@ -88,7 +91,9 @@ export default class ReservationService {
         deleteId
       );
       if (!deletedReservation) {
-        throw new Error(`Error deleting reservation with code: ${deleteId}`);
+        throw new Error(
+          `No se pudo eliminar la reserva ${updateId}. Intente nuevamente`
+        );
       }
 
       return deletedReservation;

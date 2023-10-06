@@ -8,7 +8,7 @@ class Reservation {
       const reservation = await reservationModel.findOne({ _id: query });
       return reservation;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -17,7 +17,7 @@ class Reservation {
       const reservations = await reservationModel.find();
       return reservations;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -26,7 +26,7 @@ class Reservation {
       const reservations = await reservationModel.find({email});
       return reservations;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -35,7 +35,7 @@ class Reservation {
       const newReservation = await reservationModel.create(reservation);
       return newReservation;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -47,7 +47,7 @@ class Reservation {
       );
       return updatedReservation;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -58,7 +58,7 @@ class Reservation {
       });
       return deletedReservation;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 }
