@@ -2,6 +2,8 @@ import passport from "passport";
 import local from "passport-local";
 import jwt from "passport-jwt";
 
+import { userService } from "../services/services.js";
+
 import { createHash } from "../utils.js";
 import { config } from "../config/config.js";
 
