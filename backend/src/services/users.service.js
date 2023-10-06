@@ -6,12 +6,16 @@ import UserDTO from "../dao/dtos/user.dto.js";
 import { createHash, isValidPassword } from "../utils.js";
 import { config } from "../config/config.js";
 
+import { emailTemplates } from "../mail/templates.js";
+
 const {
   jwt: { JWT_SECRET },
 } = config;
 
 export default class UserService {
-  constructor() {}
+  constructor(mailService) {
+    this.mailService = mailService;
+  }
 
   async getUser(email) {
     try {
@@ -57,7 +61,15 @@ export default class UserService {
       if (!user) throw new Error("Error en la creación del usuario");
 
       const userDTO = new UserDTO(user);
-      // const { email, name, role } = userDTO;
+      const { email, name, role } = userDTO;
+
+      const mail = {
+        to: email,
+        subject: `Bienvenido a Z! Juegos, ${name}!`,
+        html: emailTemplates.newUserGreetingEmail(name, role),
+      };
+
+      await this.mailService.sendEmail(mail);
 
       return user;
     } catch (error) {
@@ -67,6 +79,31 @@ export default class UserService {
 
   passwordValidate(user, password) {
     return isValidPassword(user, password);
+  }
+
+  async restorePasswordProcess(email, domain) {
+    try {
+      const user = await userDao.getUser({ email });
+      if (!user) throw new Error("No se encontró el usuario");
+
+      const userDTO = new UserDTO(user);
+      const { name } = userDTO;
+
+      const token = jwt.sign({ email }, JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      if (!token) throw new Error("Falló la firma del token de autorización");
+      
+      const mail = {
+        to: email,
+        subject: `Reestablecimiento de contraseña de Z! para ${name}`,
+        html: emailTemplates.passwordRestoreEmail(email, name, token, domain),
+      };
+
+      await this.mailService.sendEmail(mail);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updatePassword(token, password) {

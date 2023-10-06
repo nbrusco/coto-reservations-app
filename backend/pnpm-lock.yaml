@@ -32,6 +32,9 @@ dependencies:
   mongoose:
     specifier: ^7.5.4
     version: 7.5.4
+  nodemailer:
+    specifier: ^6.9.5
+    version: 6.9.5
   passport:
     specifier: ^0.6.0
     version: 0.6.0
@@ -949,6 +952,11 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+    dev: false
+
+  /nodemailer@6.9.5:
+    resolution: {integrity: sha512-/dmdWo62XjumuLc5+AYQZeiRj+PRR8y8qKtFCOyuOl1k/hckZd8durUUHs/ucKx6/8kN+wFxqKJlQ/LK/qR5FA==}
+    engines: {node: '>=6.0.0'}
     dev: false
 
   /nodemon@3.0.1:

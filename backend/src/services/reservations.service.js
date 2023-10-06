@@ -2,8 +2,12 @@ import { v4 as uuidv4 } from "uuid";
 
 import { reservationDao } from "../dao/mongo/reservation.mongo.js";
 
+import { emailTemplates } from "../mail/templates.js";
+
 export default class ReservationService {
-  constructor() {}
+  constructor (mailService) {
+    this.mailService = mailService
+  }
 
   async getReservation(code) {
     try {

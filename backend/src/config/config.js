@@ -11,4 +11,10 @@ export const config = {
   db: {
     DB_URL: process.env.DB_URL,
   },
+  mailing: {
+    EMAIL_SERVICE: process.env.EMAIL_SERVICE,
+    EMAIL_PORT: parseInt(process.env.EMAIL_PORT),
+    EMAIL_USER: process.env.EMAIL_USER,
+    EMAIL_PASS: process.env.EMAIL_PASS
+  },
 };

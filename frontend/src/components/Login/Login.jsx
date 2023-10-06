@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import {
-  firstLoginSwal,
+  loadingSwal,
   loginSwal,
   errorSwal
 } from "../../services/sweetalert2/swalCalls.js";
@@ -21,8 +21,8 @@ const Login = () => {
       password: Yup.string().required("Este campo es obligatorio"),
     }),
     onSubmit: async (values) => {
-      firstLoginSwal()
       try {
+        loadingSwal()
         const response = await fetch('http://localhost:8080/api/v1/users/login', {
           method: 'POST',
           body: JSON.stringify(values),
@@ -40,8 +40,6 @@ const Login = () => {
       } catch ({ error }) {
         errorSwal(error)
       }
-      console.log("Values:", values);
-
     },
   });
 

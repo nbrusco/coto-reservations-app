@@ -7,6 +7,7 @@ import {
   loginUser,
   logoutUser,
   updatePassword,
+  restorePasswordProcess,
 } from "../controllers/users.controller.js";
 
 const usersRouter = Router();
@@ -26,6 +27,7 @@ usersRouter.post(
 
 usersRouter.get("/failRegister", failRegister);
 usersRouter.post("/login", loginUser);
+usersRouter.post("/restore", restorePasswordProcess);
 usersRouter.put("/resetPassword", updatePassword);
 usersRouter.get("/logout", logoutUser);
 

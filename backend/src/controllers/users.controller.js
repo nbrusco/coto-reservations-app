@@ -53,7 +53,10 @@ export const loginUser = async (req, res, next) => {
     if (!token) {
       return res
         .status(500)
-        .send({ status: "error", error: "Error al generar el token de autorización" });
+        .send({
+          status: "error",
+          error: "Error al generar el token de autorización",
+        });
     }
 
     const last_connection = userService.updateConnection(email);
@@ -61,7 +64,10 @@ export const loginUser = async (req, res, next) => {
     if (!last_connection) {
       return res
         .status(500)
-        .send({ status: "error", error: "Error al actualizar la última conexión" });
+        .send({
+          status: "error",
+          error: "Error al actualizar la última conexión",
+        });
     }
 
     return res
@@ -82,7 +88,10 @@ export const logoutUser = async (req, res) => {
     console.error("Error al actualizar la última conexión");
     return res
       .status(500)
-      .send({ status: "error", error: "Error al actualizar la última conexión" });
+      .send({
+        status: "error",
+        error: "Error al actualizar la última conexión",
+      });
   }
   return res
     .clearCookie(COOKIE_NAME)
@@ -92,6 +101,7 @@ export const logoutUser = async (req, res) => {
 export const updatePassword = async (req, res) => {
   try {
     const { password, token } = req.body;
+    console.log(password, token)
 
     if (!password || !token) {
       return res.status(400).send({
@@ -111,6 +121,30 @@ export const updatePassword = async (req, res) => {
     return res.status(200).send({
       status: "success",
       message: "Contraseña actualizada",
+    });
+  } catch (error) {
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
+  }
+};
+
+export const restorePasswordProcess = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const domain = req.get("host");
+
+    if (!email) {
+      return res.status(400).send({
+        status: "error",
+        error: "Valores incompletos",
+      });
+    }
+
+    await userService.restorePasswordProcess(email, domain);
+
+    return res.status(200).send({
+      status: "success",
+      message: "Correo de reestablecimiento enviado",
     });
   } catch (error) {
     console.error(`${error}`);

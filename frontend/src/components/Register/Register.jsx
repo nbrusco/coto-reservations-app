@@ -1,6 +1,12 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import {
+  registerSwal,
+  errorSwal,
+  loadingSwal,
+} from "../../services/sweetalert2/swalCalls";
+
 const Register = () => {
   const formik = useFormik({
     initialValues: {
@@ -22,9 +28,30 @@ const Register = () => {
         .required("Este campo es obligatorio"),
       password: Yup.string().required("Este campo es obligatorio"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log("Values:", values);
-      // Acá va fetch a backend
+      try {
+        loadingSwal();
+        const response = await fetch(
+          "http://localhost:8080/api/v1/users/register",
+          {
+            method: "POST",
+            body: JSON.stringify(values),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          registerSwal();
+        } else {
+          throw data;
+        }
+      } catch ({ error }) {
+        errorSwal(error);
+      }
     },
   });
 
@@ -186,7 +213,7 @@ const Register = () => {
                 ¿Ya tienes una cuenta?
                 <a
                   href="/login"
-                  className='ml-1 font-medium text-violet-500 hover:underline hover:text-violet-400'
+                  className="ml-1 font-medium text-violet-500 hover:underline hover:text-violet-400"
                 >
                   Ingresa aquí
                 </a>

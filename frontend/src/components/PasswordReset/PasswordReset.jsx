@@ -1,6 +1,12 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import {
+  passUpdateSwal,
+  errorSwal,
+  loadingSwal,
+} from "../../services/sweetalert2/swalCalls";
+
 const PasswordReset = () => {
   const formik = useFormik({
     initialValues: {
@@ -13,9 +19,34 @@ const PasswordReset = () => {
         .oneOf([Yup.ref("password"), null], "Las contraseñas deben coincidir")
         .required("Este campo es obligatorio"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log("Values:", values);
-      // Acá va fetch a backend
+      try {
+        const urlParams = new URLSearchParams(window.location.search)
+        const token = urlParams.get('token')
+        values.token = token
+
+        loadingSwal();
+        const response = await fetch(
+          "http://localhost:8080/api/v1/users/resetPassword",
+          {
+            method: "PUT",
+            body: JSON.stringify(values),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          passUpdateSwal();
+        } else {
+          throw data;
+        }
+      } catch ({ error }) {
+        errorSwal(error);
+      }
     },
   });
 
