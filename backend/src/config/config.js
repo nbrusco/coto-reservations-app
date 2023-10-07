@@ -5,7 +5,6 @@ dotenv.config();
 export const config = {
   PORT: process.env.PORT || 8080,
   jwt: {
-    COOKIE_NAME: process.env.COOKIE_NAME,
     JWT_SECRET: process.env.JWT_SECRET,
   },
   db: {

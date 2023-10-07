@@ -3,7 +3,6 @@ import cowsay from "cowsay";
 import colors from "colors";
 
 import cors from "cors";
-import cookieParser from "cookie-parser";
 
 import routerAPI from "./routes/routes.js";
 
@@ -18,7 +17,6 @@ const env = async () => {
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  app.use(cookieParser());
   app.use(cors());
   initializePassport();
 

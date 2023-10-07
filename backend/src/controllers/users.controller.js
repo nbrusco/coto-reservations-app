@@ -1,10 +1,4 @@
-import { config } from "../config/config.js";
-
 import { userService } from "../services/services.js";
-
-const {
-  jwt: { COOKIE_NAME },
-} = config;
 
 export const registerUser = async (req, res) => {
   try {
@@ -66,9 +60,11 @@ export const loginUser = async (req, res, next) => {
       });
     }
 
-    return res
-      .cookie(COOKIE_NAME, token, { httpOnly: true })
-      .send({ status: "success", message: "Logueo correcto", token: token });
+    return res.send({
+      status: "success",
+      message: "Logueo correcto",
+      token: token,
+    });
   } catch (error) {
     console.error(`${error}`);
     return res.status(500).send({ status: "error", error: `${error}` });
@@ -76,7 +72,7 @@ export const loginUser = async (req, res, next) => {
 };
 
 export const logoutUser = async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1]
+  const token = req.headers.authorization.split(" ")[1];
   const { email } = await userService.decodeUser(token);
   const last_connection = userService.updateConnection(email);
 
@@ -86,9 +82,7 @@ export const logoutUser = async (req, res) => {
       error: "Error al actualizar la última conexión",
     });
   }
-  return res
-    .clearCookie(COOKIE_NAME)
-    .send({ status: "success", message: "Deslogueo correcto" });
+  return res.send({ status: "success", message: "Deslogueo correcto" });
 };
 
 export const updatePassword = async (req, res) => {
