@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 
+import { AuthContext } from "../context/AuthContext";
+
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    logout();
   };
 
   return (
@@ -17,7 +20,11 @@ const Navbar = () => {
         <ul className="flex space-x-4">
           <li>
             {isAuthenticated ? (
-              <button onClick={handleLogout} className="text-white">
+              <button
+                onClick={handleLogout}
+                className="text-white hover:text-indigo-500 font-medium "
+                cursor={"pointer"}
+              >
                 Logout
               </button>
             ) : (
@@ -27,9 +34,11 @@ const Navbar = () => {
             )}
           </li>
           <li>
-            <NavLink to="/reservas" className="text-white">
-              Mis reservas
-            </NavLink>
+            {isAuthenticated ? (
+              <NavLink to="/reservas" className="text-white">
+                Mis reservas
+              </NavLink>
+            ) : null}
           </li>
         </ul>
       </div>

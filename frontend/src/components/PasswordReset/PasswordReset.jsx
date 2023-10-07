@@ -1,13 +1,12 @@
+import { useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import {
-  passUpdateSwal,
-  errorSwal,
-  loadingSwal,
-} from "../../services/sweetalert2/swalCalls";
+import { AuthContext } from "../context/AuthContext";
 
 const PasswordReset = () => {
+  const { resetPass } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -20,33 +19,7 @@ const PasswordReset = () => {
         .required("Este campo es obligatorio"),
     }),
     onSubmit: async (values) => {
-      console.log("Values:", values);
-      try {
-        const urlParams = new URLSearchParams(window.location.search)
-        const token = urlParams.get('token')
-        values.token = token
-
-        loadingSwal();
-        const response = await fetch(
-          "http://localhost:8080/api/v1/users/resetPassword",
-          {
-            method: "PUT",
-            body: JSON.stringify(values),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        console.log(data);
-        if (response.ok) {
-          passUpdateSwal();
-        } else {
-          throw data;
-        }
-      } catch ({ error }) {
-        errorSwal(error);
-      }
+      resetPass(values);
     },
   });
 

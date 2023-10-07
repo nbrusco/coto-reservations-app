@@ -1,13 +1,12 @@
+import { useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import {
-  passRecoverySwal,
-  errorSwal,
-  loadingSwal,
-} from "../../services/sweetalert2/swalCalls";
+import { AuthContext } from "../context/AuthContext";
 
 const PasswordRestore = () => {
+  const { restorePass } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -18,29 +17,7 @@ const PasswordRestore = () => {
         .required("Este campo es obligatorio"),
     }),
     onSubmit: async (values) => {
-      console.log("Values:", values);
-      try {
-        loadingSwal();
-        const response = await fetch(
-          "http://localhost:8080/api/v1/users/restore",
-          {
-            method: "POST",
-            body: JSON.stringify(values),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        console.log(data);
-        if (response.ok) {
-          passRecoverySwal();
-        } else {
-          throw data;
-        }
-      } catch ({ error }) {
-        errorSwal(error);
-      }
+      restorePass(values);
     },
   });
 

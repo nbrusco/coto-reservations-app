@@ -1,13 +1,12 @@
+import { useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import {
-  loadingSwal,
-  loginSwal,
-  errorSwal
-} from "../../services/sweetalert2/swalCalls.js";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -21,25 +20,7 @@ const Login = () => {
       password: Yup.string().required("Este campo es obligatorio"),
     }),
     onSubmit: async (values) => {
-      try {
-        loadingSwal()
-        const response = await fetch('http://localhost:8080/api/v1/users/login', {
-          method: 'POST',
-          body: JSON.stringify(values),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        const data = await response.json()
-        console.log(data)
-        if (response.ok) {
-          loginSwal();
-        } else {
-          throw data
-        }
-      } catch ({ error }) {
-        errorSwal(error)
-      }
+      login(values)
     },
   });
 
