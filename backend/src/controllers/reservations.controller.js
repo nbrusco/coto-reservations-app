@@ -1,4 +1,5 @@
 import { reservationService } from "../services/services.js";
+import { userService } from "../services/services.js";
 
 export const getReservation = async (req, res) => {
   try {
@@ -83,8 +84,9 @@ export const getReservationsByEmail = async (req, res) => {
 
 export const appointReservation = async (req, res) => {
   try {
-    const { email, date, type, guests, commentaries } = req.body;
-    const { jwtCookie: token } = req.cookies;
+    const { date, type, guests, commentaries } = req.body;
+    const token = req.headers.authorization.split(' ')[1]
+    const { email } = await userService.decodeUser(token);
 
     if (!token) {
       return res.status(400).send({

@@ -97,7 +97,7 @@ export default class UserService {
       const mail = {
         to: email,
         subject: `Reestablecimiento de contraseña de Z! para ${name}`,
-        html: emailTemplates.passwordRestoreEmail(email, name, token, domain),
+        html: emailTemplates.passwordRestoreEmail(email, name, token),
       };
 
       await this.mailService.sendEmail(mail);

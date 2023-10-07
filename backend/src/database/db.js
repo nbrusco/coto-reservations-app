@@ -10,7 +10,7 @@ const database = {
     try {
       await mongoose.connect(DB_URL)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 }

@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   last_connection: Date,
+  role: {
+    type: String,
+    enum: ['admin', 'user'],
+    default: 'user'
+  },
 });
 
 export const userModel = mongoose.model(userCollection, userSchema);

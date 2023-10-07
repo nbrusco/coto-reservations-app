@@ -1,4 +1,7 @@
 import { Router } from "express";
+import passport from 'passport'
+
+import { verifyRole } from "../middlewares/auth.js";
 
 import {
   getReservation,
@@ -11,12 +14,36 @@ import {
 
 const reservationsRouter = Router();
 
-reservationsRouter.get("/", getReservations);
-reservationsRouter.get("/:rid", getReservation);
-reservationsRouter.get("/appointments/:email", getReservationsByEmail);
+reservationsRouter.get(
+  "/",
+  (req, res, next) => verifyRole(req, res, next, ["admin"]),
+  getReservations
+);
+reservationsRouter.get(
+  "/:rid",
+  (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
+  getReservation
+);
+reservationsRouter.get(
+  "/appointments/:email",
+  (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
+  getReservationsByEmail
+);
 
-reservationsRouter.post("/", appointReservation);
-reservationsRouter.put("/:rid", updateReservation);
-reservationsRouter.delete("/:rid", deleteReservation);
+reservationsRouter.post(
+  "/",
+  (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
+  appointReservation
+);
+reservationsRouter.put(
+  "/:rid",
+  (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
+  updateReservation
+);
+reservationsRouter.delete(
+  "/:rid",
+  (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
+  deleteReservation
+);
 
 export default reservationsRouter;

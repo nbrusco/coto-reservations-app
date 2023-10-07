@@ -51,28 +51,24 @@ export const loginUser = async (req, res, next) => {
     const token = userService.loginUser(user, rememberMe);
 
     if (!token) {
-      return res
-        .status(500)
-        .send({
-          status: "error",
-          error: "Error al generar el token de autorización",
-        });
+      return res.status(500).send({
+        status: "error",
+        error: "Error al generar el token de autorización",
+      });
     }
 
     const last_connection = userService.updateConnection(email);
 
     if (!last_connection) {
-      return res
-        .status(500)
-        .send({
-          status: "error",
-          error: "Error al actualizar la última conexión",
-        });
+      return res.status(500).send({
+        status: "error",
+        error: "Error al actualizar la última conexión",
+      });
     }
 
     return res
       .cookie(COOKIE_NAME, token, { httpOnly: true })
-      .send({ status: "success", message: "Logueo correcto" });
+      .send({ status: "success", message: "Logueo correcto", token: token });
   } catch (error) {
     console.error(`${error}`);
     return res.status(500).send({ status: "error", error: `${error}` });
@@ -80,18 +76,15 @@ export const loginUser = async (req, res, next) => {
 };
 
 export const logoutUser = async (req, res) => {
-  const { jwtCookie: token } = req.cookies;
+  const token = req.headers.authorization.split(' ')[1]
   const { email } = await userService.decodeUser(token);
   const last_connection = userService.updateConnection(email);
 
   if (!last_connection) {
-    console.error("Error al actualizar la última conexión");
-    return res
-      .status(500)
-      .send({
-        status: "error",
-        error: "Error al actualizar la última conexión",
-      });
+    return res.status(500).send({
+      status: "error",
+      error: "Error al actualizar la última conexión",
+    });
   }
   return res
     .clearCookie(COOKIE_NAME)
@@ -144,6 +137,36 @@ export const restorePasswordProcess = async (req, res) => {
     return res.status(200).send({
       status: "success",
       message: "Correo de reestablecimiento enviado",
+    });
+  } catch (error) {
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
+  }
+};
+
+export const getUserWithToken = async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(400).send({
+        status: "error",
+        error: "Incomplete values",
+      });
+    }
+
+    const data = await userService.decodeUser(token);
+
+    if (!data) {
+      return res.status(404).send({
+        status: "error",
+        error: `Error obteniendo datos de usuario`,
+      });
+    }
+
+    return res.status(200).send({
+      status: "success",
+      payload: data,
     });
   } catch (error) {
     console.error(`${error}`);

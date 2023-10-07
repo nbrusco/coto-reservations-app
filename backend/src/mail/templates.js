@@ -56,7 +56,7 @@ export const emailTemplates = {
     </body>
     </html>
   `,
-  passwordRestoreEmail: (email, name, token, domain) => `
+  passwordRestoreEmail: (email, name, token) => `
   <!DOCTYPE html>
   <html>
   <head>
@@ -106,6 +106,73 @@ export const emailTemplates = {
   <tr>
   <td bgcolor="#f7f7f7" align="center" style="padding: 20px 0 20px 0; color: #888888; font-family: Arial, sans-serif; font-size: 12px;">
     Este es un correo electrónico automatizado. Por favor, no lo responda.
+  </td>
+  </tr>
+  </table>
+  </td>
+  </tr>
+  </table>
+  </body>
+  </html>
+  `,
+  reservationEmail: (name, email, date, type, code, guests, commentaries) => `
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <meta charset="UTF-8">
+  <title>Confirmación de Reserva en Z! Juegos</title>
+  </head>
+  <body>
+  <table cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr>
+  <td align="center" bgcolor="#f7f7f7">
+  <table cellpadding="0" cellspacing="0" border="0" width="600" style="border-collapse: collapse;">
+  <tr>
+  <td align="center" bgcolor="#ffffff" style="padding: 40px 0 30px 0;">
+    <img src="https://i.imgur.com/ll13OQl.png" alt="Logo" width="150">
+  </td>
+  </tr>
+  <tr>
+  <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse;">
+      <tr>
+        <td style="color: #333333; font-family: Arial, sans-serif; font-size: 24px;">
+          Confirmación de Reserva
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 20px 0 30px 0; color: #333333; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px;">
+          Estimado ${name},
+          <br><br>
+          ¡Tu reserva en Z! Juegos ha sido confirmada! Aquí están los detalles:
+          <br><br>
+          - Nombre: ${name}
+          <br>
+          - Correo Electrónico: ${email}
+          <br>
+          - Fecha de Reserva: ${date}
+          <br>
+          - Tipo de Evento: ${type}
+          <br>
+          - Cantidad de Invitados: ${guests}
+          <br>
+          - Código de Reserva: ${code}
+          <br>
+          - Comentarios: ${commentaries || "Ninguno"}
+          <br><br>
+          ¡Esperamos que tengas una experiencia increíble en Z! Juegos!
+          <br><br>
+          Atentamente,
+          <br>
+          Z! Juegos
+        </td>
+      </tr>
+    </table>
+  </td>
+  </tr>
+  <tr>
+  <td bgcolor="#f7f7f7" align="center" style="padding: 20px 0 20px 0; color: #888888; font-family: Arial, sans-serif; font-size: 12px;">
+  Este es un correo electrónico automatizado. Por favor, no lo responda.
   </td>
   </tr>
   </table>

@@ -4,8 +4,7 @@ import { NavLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout();
@@ -19,7 +18,7 @@ const Navbar = () => {
         </NavLink>
         <ul className="flex space-x-4">
           <li>
-            {isAuthenticated ? (
+            {user ? (
               <button
                 onClick={handleLogout}
                 className="text-white hover:text-indigo-500 font-medium "
@@ -34,7 +33,7 @@ const Navbar = () => {
             )}
           </li>
           <li>
-            {isAuthenticated ? (
+            {user ? (
               <NavLink to="/reservas" className="text-white">
                 Mis reservas
               </NavLink>

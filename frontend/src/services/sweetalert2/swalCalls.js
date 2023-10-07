@@ -33,30 +33,30 @@ export const loginSwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-        // window.location.href = "/";
+      window.location.href = "/";
     },
   });
 };
 
 export const logoutSwal = () => {
-    Swal.fire({
-      title: 'Deslogueo exitoso!',
-      text: 'Dirigiendote a home, ¡Hasta luego!',
-      allowOutsideClick: false,
-      confirmButton: false,
-      icon: 'success',
-      timer: 2000,
-      timerProgressBar: true,
-      customClass: {
-        popup: '!text-slate-200 !bg-slate-800/90 !rounded-3xl',
-        confirmButton: '!bg-blue-600 !px-5',
-        timerProgressBar: '!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl'
-      },
-      willClose: () => {
-        window.location.href = '/'
-      }
-    })
-  }
+  Swal.fire({
+    title: "Deslogueo exitoso!",
+    text: "Dirigiendote a home, ¡Hasta luego!",
+    allowOutsideClick: false,
+    confirmButton: false,
+    icon: "success",
+    timer: 2000,
+    timerProgressBar: true,
+    customClass: {
+      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
+      confirmButton: "!bg-blue-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+    },
+    willClose: () => {
+      window.location.href = "/";
+    },
+  });
+};
 
 export const registerSwal = () => {
   Swal.fire({
@@ -71,7 +71,7 @@ export const registerSwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-    //   window.location.href = '/login'
+        window.location.href = '/login'
     },
   });
 };
@@ -89,28 +89,47 @@ export const passRecoverySwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-    //   window.location.href = "/";
+        window.location.href = "/";
     },
   });
 };
 
 export const passUpdateSwal = () => {
-    Swal.fire({
-      title: 'Cambio exitoso!',
-      text: "Dirigiendote a pantalla de login.",
-      icon: 'success',
-      customClass: {
-        popup: '!text-slate-200 !bg-slate-800/90 !rounded-3xl',
-        confirmButton: '!bg-blue-600 !px-5',
-        timerProgressBar: '!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl'
-      },
-      timer: 2000,
-      timerProgressBar: true,
-      willClose: () => {
-        // window.location.href = '/login'
-      }
-    })
-  }
+  Swal.fire({
+    title: "Cambio exitoso!",
+    text: "Dirigiendote a pantalla de login.",
+    icon: "success",
+    customClass: {
+      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
+      confirmButton: "!bg-blue-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+    },
+    timer: 2000,
+    timerProgressBar: true,
+    willClose: () => {
+      window.location.href = '/login'
+    },
+  });
+};
+
+export const reservationSwal = () => {
+  MySwal.fire({
+    title: "Reserva exitosa!",
+    text: "Muchas gracias! Se enviaron los detalles a tu correo",
+    allowOutsideClick: false,
+    icon: "success",
+    customClass: {
+      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
+      confirmButton: "!bg-blue-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+    },
+    timer: 2000,
+    timerProgressBar: true,
+    willClose: () => {
+      window.location.href = "/";
+    },
+  });
+};
 
 export const errorSwal = (
   error = "Hubo un error en la solicitud, por favor, intenta de nuevo!"
@@ -128,7 +147,7 @@ export const errorSwal = (
       timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
     },
     willClose: () => {
-        // location.reload();
+      location.reload();
     },
   });
 };

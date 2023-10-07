@@ -8,13 +8,12 @@ import {
   logoutUser,
   updatePassword,
   restorePasswordProcess,
+  getUserWithToken
 } from "../controllers/users.controller.js";
 
 const usersRouter = Router();
 
-usersRouter.get("/", async (req, res) => {
-  return res.status(200).send({ status: "success", message: "Hello!" });
-});
+usersRouter.post("/", getUserWithToken);
 
 usersRouter.post(
   "/register",
@@ -29,6 +28,6 @@ usersRouter.get("/failRegister", failRegister);
 usersRouter.post("/login", loginUser);
 usersRouter.post("/restore", restorePasswordProcess);
 usersRouter.put("/resetPassword", updatePassword);
-usersRouter.get("/logout", logoutUser);
+usersRouter.post("/logout", logoutUser);
 
 export default usersRouter;

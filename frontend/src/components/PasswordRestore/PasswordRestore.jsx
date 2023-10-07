@@ -42,6 +42,7 @@ const PasswordRestore = () => {
                   Ingresa tu correo electrónico
                 </label>
                 <input
+                  id="email"
                   type="email"
                   name="email"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${

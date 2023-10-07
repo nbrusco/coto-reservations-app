@@ -44,6 +44,7 @@ const PasswordReset = () => {
                   Nueva contraseña
                 </label>
                 <input
+                  id="password"
                   type="password"
                   name="password"
                   placeholder="••••••••"
@@ -71,6 +72,7 @@ const PasswordReset = () => {
                   Repetir la nueva contraseña
                 </label>
                 <input
+                  id="password2"
                   type="password"
                   name="password2"
                   placeholder="••••••••"

@@ -1,37 +1,72 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const ReservationForm = () => {
-  const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
+import {
+  loadingSwal,
+  reservationSwal,
+  errorSwal,
+} from "../../services/sweetalert2/swalCalls";
 
+const ReservationForm = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().split("T")[0];
+
+  const threeMonts = new Date();
+  threeMonts.setDate(threeMonts.getDate() + 90)
+  const maxDate = threeMonts.toISOString().split("T")[0];
+
+  const typeOptions = ["Cumpleaños", "Fiesta infantil", "Celebracion"];
+  const timeOptions = ["16:00", "17:00", "18:00", "19:00"];
 
   const formik = useFormik({
     initialValues: {
       date: "",
       time: "",
-      eventType: "",
-      guestCount: "",
-      comments: "",
+      type: "",
+      guests: "",
+      commentaries: "",
     },
     validationSchema: Yup.object({
       date: Yup.date()
         .min(minDate, "No se puede reservar para hoy o fechas pasadas")
+        .max(maxDate, "No se puede reservar para más de 90 días")
         .required("Este campo es obligatorio"),
       time: Yup.string().required("Este campo es obligatorio"),
-      eventType: Yup.string().required("Este campo es obligatorio"),
-      guestCount: Yup.number()
+      type: Yup.string().required("Este campo es obligatorio"),
+      guests: Yup.number()
         .integer("Debe ser un número entero")
         .min(1, "Debe ser un número positivo")
         .required("Este campo es obligatorio"),
     }),
-    onSubmit: (values) => {
-      const dateAndTime = new Date(`${values.date}T${values.time}`);
-      console.log("Fecha y Hora Seleccionadas:", dateAndTime);
-      console.log("Values:", values);
-      // Acá va fetch a backend
+    onSubmit: async (values) => {
+      try {
+        loadingSwal();
+        const dateAndTime = new Date(`${values.date}T${values.time}`);
+
+        values.dateAndTime = dateAndTime;
+        const authToken = localStorage.getItem("authToken");
+
+        const response = await fetch(
+          "http://localhost:8080/api/v1/reservations/",
+          {
+            method: "POST",
+            body: JSON.stringify(values),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          reservationSwal();
+        } else {
+          throw data;
+        }
+      } catch ({ error }) {
+        errorSwal(error);
+      }
     },
   });
 
@@ -55,6 +90,7 @@ const ReservationForm = () => {
                   Fecha
                 </label>
                 <input
+                  id="date"
                   type="date"
                   name="date"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
@@ -81,6 +117,7 @@ const ReservationForm = () => {
                   Horario
                 </label>
                 <select
+                  id="time"
                   name="time"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
                     formik.touched.time && formik.errors.time
@@ -95,10 +132,11 @@ const ReservationForm = () => {
                   <option value="" disabled>
                     Selecciona un horario
                   </option>
-                  <option value="16:00">16:00</option>
-                  <option value="17:00">17:00</option>
-                  <option value="18:00">18:00</option>
-                  <option value="19:00">19:00</option>
+                  {timeOptions.map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
                 </select>
                 {formik.touched.time && formik.errors.time ? (
                   <div className="text-red-500 text-xs mt-1 absolute">
@@ -108,84 +146,89 @@ const ReservationForm = () => {
               </div>
               <div>
                 <label
-                  htmlFor="eventType"
+                  htmlFor="type"
                   className="block mb-2 text-sm font-medium text-white"
                 >
                   Tipo de Evento
                 </label>
                 <select
-                  name="eventType"
+                  id="type"
+                  name="type"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
-                    formik.touched.eventType && formik.errors.eventType
+                    formik.touched.type && formik.errors.type
                       ? "border-red-500"
                       : ""
                   }`}
                   required=""
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.eventType}
+                  value={formik.values.type}
                 >
                   <option value="" disabled>
                     Selecciona el tipo de evento
                   </option>
-                  <option value="cumpleanos">Cumpleaños</option>
-                  <option value="infantil">Fiesta infantil</option>
-                  <option value="celebracion">Celebracion</option>
+                  {typeOptions.map((eventType) => (
+                    <option key={eventType} value={eventType}>
+                      {eventType}
+                    </option>
+                  ))}
                 </select>
-                {formik.touched.eventType && formik.errors.eventType ? (
+                {formik.touched.type && formik.errors.type ? (
                   <div className="text-red-500 text-xs mt-1 absolute">
-                    {formik.errors.eventType}
+                    {formik.errors.type}
                   </div>
                 ) : null}
               </div>
               <div>
                 <label
-                  htmlFor="guestCount"
+                  htmlFor="guests"
                   className="block mb-2 text-sm font-medium text-white"
                 >
                   Cantidad de invitados
                 </label>
                 <input
+                  id="guests"
                   type="number"
-                  name="guestCount"
+                  name="guests"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
-                    formik.touched.guestCount && formik.errors.guestCount
+                    formik.touched.guests && formik.errors.guests
                       ? "border-red-500"
                       : ""
                   }`}
                   placeholder="10"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.guestCount}
+                  value={formik.values.guests}
                 />
-                {formik.touched.guestCount && formik.errors.guestCount ? (
+                {formik.touched.guests && formik.errors.guests ? (
                   <div className="text-red-500 text-xs mt-1 absolute">
-                    {formik.errors.guestCount}
+                    {formik.errors.guests}
                   </div>
                 ) : null}
               </div>
               <div>
                 <label
-                  htmlFor="comments"
+                  htmlFor="commentaries"
                   className="block mb-2 text-sm font-medium text-white"
                 >
                   Comentarios
                 </label>
                 <textarea
-                  name="comments"
+                  id="commentaries"
+                  name="commentaries"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
-                    formik.touched.comments && formik.errors.comments
+                    formik.touched.commentaries && formik.errors.commentaries
                       ? "border-red-500"
                       : ""
                   }`}
                   placeholder="Escribe cualquier detalle que quieras hacernos saber (opcional)"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.comments}
+                  value={formik.values.commentaries}
                 />
-                {formik.touched.comments && formik.errors.comments ? (
+                {formik.touched.commentaries && formik.errors.commentaries ? (
                   <div className="text-red-500 text-xs mt-1 absolute">
-                    {formik.errors.comments}
+                    {formik.errors.commentaries}
                   </div>
                 ) : null}
               </div>

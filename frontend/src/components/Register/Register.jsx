@@ -53,6 +53,7 @@ const Register = () => {
                   Nombre
                 </label>
                 <input
+                  id="first_name"
                   type="text"
                   name="first_name"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
@@ -80,6 +81,7 @@ const Register = () => {
                   Apellido
                 </label>
                 <input
+                  id="last_name"
                   type="text"
                   name="last_name"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
@@ -107,6 +109,7 @@ const Register = () => {
                   Edad
                 </label>
                 <input
+                  id="age"
                   type="number"
                   name="age"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
@@ -134,6 +137,7 @@ const Register = () => {
                   Correo electrónico
                 </label>
                 <input
+                  id="email"
                   type="email"
                   name="email"
                   className={`border sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
@@ -161,6 +165,7 @@ const Register = () => {
                   Contraseña
                 </label>
                 <input
+                  id="password"
                   type="password"
                   name="password"
                   placeholder="••••••••"
