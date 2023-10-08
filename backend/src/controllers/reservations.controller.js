@@ -85,9 +85,8 @@ export const getReservationsByEmail = async (req, res) => {
 export const appointReservation = async (req, res) => {
   try {
     const { date, type, guests, commentaries } = req.body;
-    const token = req.headers.authorization.split(' ')[1]
-    const { email } = await userService.decodeUser(token);
-
+    const token = req.headers.authorization;
+    
     if (!token) {
       return res.status(400).send({
         status: "error",
@@ -101,7 +100,9 @@ export const appointReservation = async (req, res) => {
         error: "Valores incompletos",
       });
     }
-
+    
+    const { email } = await userService.decodeUser(token);
+    
     const appointedReservation = await reservationService.appointReservation(
       email,
       date,

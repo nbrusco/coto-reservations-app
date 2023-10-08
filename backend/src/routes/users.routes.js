@@ -13,7 +13,7 @@ import {
 
 const usersRouter = Router();
 
-usersRouter.post("/", getUserWithToken);
+usersRouter.get("/", getUserWithToken);
 
 usersRouter.post(
   "/register",
@@ -28,6 +28,6 @@ usersRouter.get("/failRegister", failRegister);
 usersRouter.post("/login", loginUser);
 usersRouter.post("/restore", restorePasswordProcess);
 usersRouter.put("/resetPassword", updatePassword);
-usersRouter.post("/logout", logoutUser);
+usersRouter.get("/logout", logoutUser);
 
 export default usersRouter;

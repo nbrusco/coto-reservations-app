@@ -46,9 +46,9 @@ export const AuthProvider = ({ children }) => {
   const checkUser = async (token) => {
     try {
       const response = await fetch("http://localhost:8080/api/v1/users/", {
-        method: "POST",
+        method: "GET",
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
       const response = await fetch(
         "http://localhost:8080/api/v1/users/logout",
         {
-          method: "POST",
+          method: "GET",
           headers: {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",

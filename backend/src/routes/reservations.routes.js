@@ -16,32 +16,38 @@ const reservationsRouter = Router();
 
 reservationsRouter.get(
   "/",
-  (req, res, next) => verifyRole(req, res, next, ["admin"]),
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => verifyRole(req, res, next, ["user"]),
   getReservations
 );
 reservationsRouter.get(
   "/:rid",
+  passport.authenticate("jwt", { session: false }),
   (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
   getReservation
 );
 reservationsRouter.get(
   "/appointments/:email",
+  passport.authenticate("jwt", { session: false }),
   (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
   getReservationsByEmail
 );
 
 reservationsRouter.post(
   "/",
+  passport.authenticate("jwt", { session: false }),
   (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
   appointReservation
 );
 reservationsRouter.put(
   "/:rid",
+  passport.authenticate("jwt", { session: false }),
   (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
   updateReservation
 );
 reservationsRouter.delete(
   "/:rid",
+  passport.authenticate("jwt", { session: false }),
   (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
   deleteReservation
 );

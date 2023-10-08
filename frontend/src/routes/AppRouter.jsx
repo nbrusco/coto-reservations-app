@@ -13,8 +13,6 @@ import PasswordRestore from "../components/PasswordRestore/PasswordRestore";
 import PasswordReset from "../components/PasswordReset/PasswordReset";
 import ReservationForm from "../components/ReservationForm/ReservationForm";
 
-// Proteger por auth
-
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
 

@@ -170,6 +170,7 @@ export default class UserService {
 
   async decodeUser(token) {
     try {
+      token = token.split(' ')[1];
       const decodedToken = jwt.verify(token, JWT_SECRET, {
         ignoreExpiration: true,
       });

@@ -72,7 +72,7 @@ export const loginUser = async (req, res, next) => {
 };
 
 export const logoutUser = async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization;
   const { email } = await userService.decodeUser(token);
   const last_connection = userService.updateConnection(email);
 
