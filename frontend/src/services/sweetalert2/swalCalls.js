@@ -146,8 +146,5 @@ export const errorSwal = (
       confirmButton: "!bg-blue-600 !px-5",
       timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
     },
-    willClose: () => {
-      location.reload();
-    },
   });
 };

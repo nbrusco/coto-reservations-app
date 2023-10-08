@@ -7,12 +7,6 @@ import { userService } from "../services/services.js";
 import { createHash } from "../utils.js";
 import { config } from "../config/config.js";
 
-// const cookieExtractor = (req) => {
-//   let token = null;
-//   req && req.cookies ? (token = req.cookies[COOKIE_NAME]) : null;
-//   return token;
-// };
-
 const {
   jwt: { JWT_SECRET },
 } = config;
@@ -24,7 +18,6 @@ const extractJwt = jwt.ExtractJwt;
 const jwtOptions = {
   secretOrKey: JWT_SECRET,
   jwtFromRequest: extractJwt.fromAuthHeaderAsBearerToken()
-  // jwtFromRequest: extractJwt.fromExtractors([cookieExtractor]),
 };
 
 const initializePassport = () => {

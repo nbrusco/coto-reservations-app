@@ -1,9 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-
 import { reservationDao } from "../dao/mongo/reservation.mongo.js";
-import { userDao } from "../dao/mongo/user.mongo.js";
-import UserDTO from "../dao/dtos/user.dto.js";
-
 import { emailTemplates } from "../mail/templates.js";
 
 export default class ReservationService {
@@ -45,37 +41,44 @@ export default class ReservationService {
     }
   }
 
-  async appointReservation(email, date, type, guests, commentaries) {
+  async appointReservation(reservation, email, name) {
     try {
-      const user = await userDao.getUser({ email });
-      if (!user) throw new Error("No se encontró el usuario");
-
-      const userDTO = new UserDTO(user);
-      const { name } = userDTO;
-
       const code = uuidv4();
       const createdAt = new Date();
+      const dateAndTime = new Date(`${reservation.date}T${reservation.time}Z`);
 
-      const reservation = {
-        email,
-        date,
-        createdAt,
-        type,
-        guests,
-        code,
-        commentaries,
+      const dateOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       };
+      const timeOptions = {
+        hour: "numeric",
+        minute: "numeric",
+      };
+
+      reservation.date = dateAndTime;
+      reservation.code = code;
+      reservation.createdAt = createdAt;
+      reservation.email = email;
+      reservation.name = name;
 
       const newReservation = await reservationDao.appointReservation(
         reservation
       );
+
       if (!newReservation)
         throw new Error(`No se pudo realizar la reserva. Intente nuevamente`);
+
+      const dateFormat = dateAndTime.toLocaleDateString("es-AR", dateOptions);
+      const timeFormat = dateAndTime.toLocaleTimeString("es-AR", timeOptions);
+
+      const formattedDate = `${dateFormat} a las ${timeFormat}hs`;
 
       const mail = {
         to: email,
         subject: `${name}, tu Reserva realizada en Z!`,
-        html: emailTemplates.reservationEmail(name, email, date, type, code, guests, commentaries),
+        html: emailTemplates.reservationEmail(reservation, formattedDate),
       };
 
       await this.mailService.sendEmail(mail);

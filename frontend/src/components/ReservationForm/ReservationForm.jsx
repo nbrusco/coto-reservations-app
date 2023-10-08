@@ -10,6 +10,7 @@ import {
 const ReservationForm = () => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(tomorrow.getHours() - 3)
   const minDate = tomorrow.toISOString().split("T")[0];
 
   const threeMonts = new Date();
@@ -42,9 +43,6 @@ const ReservationForm = () => {
     onSubmit: async (values) => {
       try {
         loadingSwal();
-        const dateAndTime = new Date(`${values.date}T${values.time}`);
-
-        values.dateAndTime = dateAndTime;
         const authToken = localStorage.getItem("authToken");
 
         const response = await fetch(

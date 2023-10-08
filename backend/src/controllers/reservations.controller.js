@@ -84,9 +84,9 @@ export const getReservationsByEmail = async (req, res) => {
 
 export const appointReservation = async (req, res) => {
   try {
-    const { date, type, guests, commentaries } = req.body;
+    const reservation = req.body;
     const token = req.headers.authorization;
-    
+
     if (!token) {
       return res.status(400).send({
         status: "error",
@@ -94,21 +94,19 @@ export const appointReservation = async (req, res) => {
       });
     }
 
-    if (!email || !date || !type || !guests) {
+    const { email, name } = await userService.decodeUser(token);
+
+    if (!email || !reservation || !name) {
       return res.status(400).send({
         status: "error",
         error: "Valores incompletos",
       });
     }
-    
-    const { email } = await userService.decodeUser(token);
-    
+
     const appointedReservation = await reservationService.appointReservation(
+      reservation,
       email,
-      date,
-      type,
-      guests,
-      commentaries
+      name
     );
 
     if (!appointedReservation) {

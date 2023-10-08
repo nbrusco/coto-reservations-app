@@ -115,7 +115,7 @@ export const emailTemplates = {
   </body>
   </html>
   `,
-  reservationEmail: (name, email, date, type, code, guests, commentaries) => `
+  reservationEmail: ({name, email, type, code, guests, commentaries}, date) => `
   <!DOCTYPE html>
   <html>
   <head>
