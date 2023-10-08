@@ -1,7 +1,9 @@
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const MySwal = withReactContent(Swal);
+import ReservationForm from "../../components/ReservationForm/ReservationForm";
+
+const MySwal = withReactContent(Swal); //eslint-disable-line
 
 export const loadingSwal = () => {
   MySwal.fire({
@@ -33,7 +35,7 @@ export const loginSwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-      // window.location.href = "/";
+      window.location.href = "/";
     },
   });
 };
@@ -71,7 +73,7 @@ export const registerSwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-        window.location.href = '/login'
+      window.location.href = "/login";
     },
   });
 };
@@ -89,7 +91,7 @@ export const passRecoverySwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-        window.location.href = "/";
+      window.location.href = "/";
     },
   });
 };
@@ -107,7 +109,7 @@ export const passUpdateSwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-      window.location.href = '/login'
+      window.location.href = "/login";
     },
   });
 };
@@ -126,8 +128,78 @@ export const reservationSwal = () => {
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-      window.location.href = "/";
+      window.location.href = "/reservas";
     },
+  });
+};
+
+export const confirmEditionSwal = (reservation, editReservation) => {
+  MySwal.fire({
+    title: "Editar reserva",
+    html: (
+      <ReservationForm
+        submitFn={editReservation}
+        reservation={reservation}
+        btnText={"Modificar reserva"}
+      />
+    ),
+    icon: "question",
+    showConfirmButton: false,
+    customClass: {
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
+    },
+  });
+};
+
+export const editReservationSwal = () => {
+  MySwal.fire({
+    title: "Reserva editada!",
+    text: "Se enviaron los detalles a tu correo",
+    allowOutsideClick: false,
+    icon: "success",
+    customClass: {
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
+    },
+    timer: 2000,
+    timerProgressBar: true,
+  });
+};
+
+export const confirmDeletionSwal = async () => {
+  const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    customClass: {
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+    },
+  });
+  return result.isConfirmed;
+};
+
+export const deleteReservationSwal = () => {
+  MySwal.fire({
+    title: "Reserva eliminada!",
+    text: "Se enviaron los detalles a tu correo",
+    allowOutsideClick: false,
+    icon: "success",
+    customClass: {
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
+    },
+    timer: 2000,
+    timerProgressBar: true,
   });
 };
 

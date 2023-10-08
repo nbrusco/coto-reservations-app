@@ -9,9 +9,13 @@ import PublicRoute from "./components/PublicRoute";
 import Home from "../components/Home/Home";
 import Login from "../components/Login/Login";
 import Register from "../components/Register/Register";
+
 import PasswordRestore from "../components/PasswordRestore/PasswordRestore";
 import PasswordReset from "../components/PasswordReset/PasswordReset";
-import ReservationForm from "../components/ReservationForm/ReservationForm";
+
+import ReservationFormContainer from "../components/ReservationFormContainer/ReservationFormContainer";
+import AdminPanel from "../components/AdminPanel/AdminPanel";
+import UserPanel from "../components/UserPanel/UserPanel";
 
 const AppRouter = () => {
   const { user } = useContext(AuthContext);
@@ -26,8 +30,16 @@ const AppRouter = () => {
         <Route path="/reestablecimiento" element={<PasswordRestore />} />
       </Route>
 
-      <Route element={<ProtectedRoute user={user} />}>
-        <Route path="/reservas" element={<ReservationForm />} />
+      <Route element={<ProtectedRoute user={user} requiredRole="user"/>}>
+        <Route path="/reservas" element={<UserPanel />} />
+      </Route>
+
+      <Route element={<ProtectedRoute user={user} requiredRole="admin"/>}>
+        <Route path="/administracion" element={<AdminPanel />} />
+      </Route>
+
+      <Route element={<ProtectedRoute user={user}/>}>
+        <Route path="/nueva-reserva" element={<ReservationFormContainer />} />
       </Route>
 
       <Route path="/restaurar" element={<PasswordReset />} />

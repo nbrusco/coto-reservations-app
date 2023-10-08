@@ -17,7 +17,7 @@ const reservationsRouter = Router();
 reservationsRouter.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => verifyRole(req, res, next, ["user"]),
+  (req, res, next) => verifyRole(req, res, next, ["admin"]),
   getReservations
 );
 reservationsRouter.get(

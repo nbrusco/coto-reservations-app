@@ -9,7 +9,7 @@ import {
   registerSwal,
   passRecoverySwal,
   passUpdateSwal,
-} from "../../services/sweetalert2/swalCalls.js";
+} from "../../services/sweetalert2/swalCalls.jsx";
 
 export const AuthContext = createContext();
 
@@ -55,8 +55,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       return data;
-    } catch (error) {
-      errorSwal();
+    } catch ({ error }) {
+      errorSwal(error);
     }
   };
 
@@ -107,8 +107,8 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         logoutSwal();
       }
-    } catch (error) {
-      errorSwal();
+    } catch ({ error }) {
+      errorSwal(error);
     }
   };
 

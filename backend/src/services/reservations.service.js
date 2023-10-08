@@ -7,6 +7,28 @@ export default class ReservationService {
     this.mailService = mailService;
   }
 
+  formatDate(date) {
+    const dateOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const timeOptions = {
+      hour: "numeric",
+      minute: "numeric",
+    };
+
+    const dateAndTime = new Date(date);
+    const dateFormat = dateAndTime.toLocaleDateString("es-AR", dateOptions);
+
+    const adjustedTime = new Date(
+      dateAndTime.getTime() + dateAndTime.getTimezoneOffset() * 60 * 1000
+    );
+    const timeFormat = adjustedTime.toLocaleTimeString("es-AR", timeOptions);
+
+    return `${dateFormat} a las ${timeFormat}hs`;
+  }
+
   async getReservation(code) {
     try {
       const reservation = await reservationDao.getReservation(code);
@@ -32,7 +54,8 @@ export default class ReservationService {
   async getReservationsByEmail(email) {
     try {
       const reservations = await reservationDao.getReservationsByEmail(email);
-      if (!reservations.length)
+
+      if (!reservations)
         throw new Error(`No se encontraron reservas de ${email}`);
 
       return reservations;
@@ -47,16 +70,6 @@ export default class ReservationService {
       const createdAt = new Date();
       const dateAndTime = new Date(`${reservation.date}T${reservation.time}Z`);
 
-      const dateOptions = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      };
-      const timeOptions = {
-        hour: "numeric",
-        minute: "numeric",
-      };
-
       reservation.date = dateAndTime;
       reservation.code = code;
       reservation.createdAt = createdAt;
@@ -70,10 +83,7 @@ export default class ReservationService {
       if (!newReservation)
         throw new Error(`No se pudo realizar la reserva. Intente nuevamente`);
 
-      const dateFormat = dateAndTime.toLocaleDateString("es-AR", dateOptions);
-      const timeFormat = dateAndTime.toLocaleTimeString("es-AR", timeOptions);
-
-      const formattedDate = `${dateFormat} a las ${timeFormat}hs`;
+      const formattedDate = this.formatDate(reservation.date);
 
       const mail = {
         to: email,
@@ -89,11 +99,20 @@ export default class ReservationService {
     }
   }
 
-  async updateReservation(updateId, updateReserv) {
+  async updateReservation(updateId, newReservation) {
     try {
+      const oldReservation = await reservationDao.getReservation(updateId);
+      const oldFormattedDate = this.formatDate(oldReservation.date);
+
+      const dateAndTime = new Date(`${newReservation.date}T${newReservation.time}Z`);
+      newReservation.date = dateAndTime;
+      console.log(newReservation.date)
+
+      const newFormattedDate = this.formatDate(newReservation.date);
+
       const updatedReservation = await reservationDao.updateReservation(
         updateId,
-        updateReserv
+        newReservation
       );
 
       if (!updatedReservation) {
@@ -101,6 +120,14 @@ export default class ReservationService {
           `No se pudo actualizar la reserva ${updateId}. Intente nuevamente`
         );
       }
+
+      const mail = {
+        to: oldReservation.email,
+        subject: "Notificación de Modificación de Reserva en Z! Juegos",
+        html: emailTemplates.reservationUpdateEmail(oldReservation, newReservation, oldFormattedDate, newFormattedDate),
+      };
+
+      await this.mailService.sendEmail(mail);
 
       return updatedReservation;
     } catch (error) {
@@ -110,6 +137,8 @@ export default class ReservationService {
 
   async deleteReservation(deleteId) {
     try {
+      const reservation = await reservationDao.getReservation(deleteId);
+
       const deletedReservation = await reservationDao.deleteReservation(
         deleteId
       );
@@ -118,6 +147,16 @@ export default class ReservationService {
           `No se pudo eliminar la reserva ${updateId}. Intente nuevamente`
         );
       }
+
+      const formattedDate = this.formatDate(reservation.date);
+
+      const mail = {
+        to: reservation.email,
+        subject: "Notificación de Eliminación de Reserva en Z! Juegos",
+        html: emailTemplates.reservationDeleteEmail(reservation, formattedDate),
+      };
+
+      await this.mailService.sendEmail(mail);
 
       return deletedReservation;
     } catch (error) {

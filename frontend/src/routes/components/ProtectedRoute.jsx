@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const ProtectedRoute = ({ user, redirectPath = "/", children }) => {
+const ProtectedRoute = ({ user, requiredRole, redirectPath = "/", children }) => {
   const location = useLocation();
   const [userLoaded, setUserLoaded] = useState(false);
 
@@ -17,7 +17,7 @@ const ProtectedRoute = ({ user, redirectPath = "/", children }) => {
     return null;
   }
 
-  if (!user) {
+  if (!user || (requiredRole && user.role !== requiredRole))  {
     return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
@@ -27,7 +27,8 @@ const ProtectedRoute = ({ user, redirectPath = "/", children }) => {
 export default ProtectedRoute;
 
 ProtectedRoute.propTypes = {
-  children: PropTypes.node,
   user: PropTypes.object,
+  requiredRole: PropTypes.string,
   redirectPath: PropTypes.string,
+  children: PropTypes.node,
 };

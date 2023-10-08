@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 const reservationCollection = "Reservations";
 
 const reservationSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,

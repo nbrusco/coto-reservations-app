@@ -32,13 +32,20 @@ const Navbar = () => {
               </NavLink>
             )}
           </li>
-          <li>
-            {user ? (
+          {user?.role === "user" ? (
+            <li>
               <NavLink to="/reservas" className="text-white">
                 Mis reservas
               </NavLink>
-            ) : null}
-          </li>
+            </li>
+          ) : null}
+          {user?.role === "admin" ? (
+            <li>
+              <NavLink to="/administracion" className="text-white">
+                Panel de adminitración
+              </NavLink>
+            </li>
+          ) : null}
         </ul>
       </div>
     </nav>

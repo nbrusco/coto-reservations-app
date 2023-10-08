@@ -135,6 +135,8 @@ export const updateReservation = async (req, res) => {
       });
     }
 
+    updateReserv?._id ? delete updateReserv._id : null
+
     const updatedReservation = await reservationService.updateReservation(
       updateId,
       updateReserv
@@ -172,10 +174,10 @@ export const deleteReservation = async (req, res) => {
       deleteId
     );
 
-    if (!deletedReservation) {
+    if (!deletedReservation || deletedReservation.deletedCount === 0) {
       return res.status(404).send({
         status: "error",
-        error: "Error al eliminar reserva",
+        error: "Error al eliminar reserva. Intente nuevamente",
       });
     }
 
