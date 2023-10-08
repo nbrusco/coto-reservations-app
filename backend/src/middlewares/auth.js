@@ -20,18 +20,3 @@ export const verifyRole = (req, res, next, rolesToVerify) => {
 
   next()
 }
-
-export const verifyPassRestoreJwt = (req, res, next) => {
-  const { token } = req.query
-  if (!token) {
-    return res.status(401).send({ message: 'No JWT provided' })
-  }
-  const decodedToken = jwt.verify(token, JWT_SECRET, {
-    ignoreExpiration: true
-  })
-
-  if (Date.now() / 1000 > decodedToken.exp) {
-    return res.status(401).send({ message: 'Token expired' })
-  }
-  next()
-}

@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -6,6 +7,15 @@ import { AuthContext } from "../context/AuthContext";
 
 const PasswordReset = () => {
   const { resetPass } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get("token");
+
+    !token ? navigate("/") : null;
+  }, [location.search, navigate]);
 
   const formik = useFormik({
     initialValues: {

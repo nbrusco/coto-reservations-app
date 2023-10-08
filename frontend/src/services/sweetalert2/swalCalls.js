@@ -10,9 +10,9 @@ export const loadingSwal = () => {
     allowOutsideClick: false,
     icon: "info",
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
     timer: 3000,
     timerProgressBar: true,
@@ -26,14 +26,14 @@ export const loginSwal = () => {
     allowOutsideClick: false,
     icon: "success",
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
     timer: 2000,
     timerProgressBar: true,
     willClose: () => {
-      window.location.href = "/";
+      // window.location.href = "/";
     },
   });
 };
@@ -48,9 +48,9 @@ export const logoutSwal = () => {
     timer: 2000,
     timerProgressBar: true,
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
     willClose: () => {
       window.location.href = "/";
@@ -64,9 +64,9 @@ export const registerSwal = () => {
     text: "Dirigiendote a pantalla de login.",
     icon: "success",
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
     timer: 2000,
     timerProgressBar: true,
@@ -82,9 +82,9 @@ export const passRecoverySwal = () => {
     text: "Revisa tu correo electrónico para obtener las instrucciones.",
     icon: "success",
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
     timer: 2000,
     timerProgressBar: true,
@@ -100,9 +100,9 @@ export const passUpdateSwal = () => {
     text: "Dirigiendote a pantalla de login.",
     icon: "success",
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
     timer: 2000,
     timerProgressBar: true,
@@ -119,9 +119,9 @@ export const reservationSwal = () => {
     allowOutsideClick: false,
     icon: "success",
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
     timer: 2000,
     timerProgressBar: true,
@@ -142,9 +142,9 @@ export const errorSwal = (
     footer: "Recargando página al cerrar",
     timerProgressBar: true,
     customClass: {
-      popup: "!text-slate-200 !bg-slate-800/90 !rounded-3xl",
-      confirmButton: "!bg-blue-600 !px-5",
-      timerProgressBar: "!m-auto !h-1 !my-2 !bg-blue-600/90 !rounded-3xl",
+      popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
+      confirmButton: "!bg-violet-600 !px-5",
+      timerProgressBar: "!m-auto !h-1 !my-2 !bg-violet-600/90 !rounded-3xl",
     },
   });
 };
