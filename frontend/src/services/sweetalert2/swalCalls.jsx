@@ -190,7 +190,7 @@ export const confirmDeletionSwal = async () => {
       return { isConfirmed: true, reason };
     },
   });
-  return result.value;
+  return result;
 };
 
 export const deleteReservationSwal = () => {
@@ -217,7 +217,7 @@ export const errorSwal = (
     html: `<strong class="text-bold">${error}</strong>`,
     icon: "error",
     timer: 5000,
-    footer: "Recargando página al cerrar",
+    footer: "¡Disculpa las molestias!",
     timerProgressBar: true,
     customClass: {
       popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
