@@ -13,15 +13,16 @@ import {
 
 export const AuthContext = createContext();
 
-const authToken = localStorage.getItem("authToken") || "null";
+const authToken = localStorage.getItem("authToken") || null;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(authToken);
 
   useEffect(() => {
     const checkTokenValidity = async () => {
-      if (authToken !== "null") {
-        const { status, payload } = await checkUser(authToken);
+      if (token !== "null") {
+        const { status, payload } = await checkUser(token);
         if (status === "success") {
           const now = Math.floor(Date.now() / 1000);
           if (payload.exp > now) {
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkTokenValidity();
-  }, []);
+  }, [token]);
 
   const checkUser = async (token) => {
     try {
@@ -77,6 +78,7 @@ export const AuthProvider = ({ children }) => {
 
         if (status === "success") {
           setUser(payload);
+          setToken(data.token);
           localStorage.setItem("authToken", data.token);
           loginSwal();
         }
@@ -90,21 +92,21 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const authToken = localStorage.getItem("authToken");
       const response = await fetch(
         "http://localhost:8080/api/v1/users/logout",
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       );
 
       if (response.ok) {
-        localStorage.setItem("authToken", "null");
         setUser(null);
+        setToken(null);
+        localStorage.setItem("authToken", "null");
         logoutSwal();
       }
     } catch ({ error }) {
@@ -195,6 +197,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        token,
         login,
         logout,
         register,

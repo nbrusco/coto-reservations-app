@@ -82,6 +82,27 @@ export const getReservationsByEmail = async (req, res) => {
   }
 };
 
+export const getOccupiedDates = async (req, res) => {
+  try {
+    const occupiedDates = await reservationService.getOccupiedDates();
+
+    if (!occupiedDates) {
+      return res.status(404).send({
+        status: "error",
+        error: "No se encontraron reservas",
+      });
+    }
+
+    return res.status(200).send({
+      status: "success",
+      payload: occupiedDates,
+    });
+  } catch (error) {
+    console.error(`${error}`);
+    return res.status(500).send({ status: "error", error: `${error}` });
+  }
+};
+
 export const appointReservation = async (req, res) => {
   try {
     const reservation = req.body;

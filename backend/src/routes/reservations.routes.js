@@ -10,6 +10,7 @@ import {
   appointReservation,
   updateReservation,
   deleteReservation,
+  getOccupiedDates,
 } from "../controllers/reservations.controller.js";
 
 const reservationsRouter = Router();
@@ -31,6 +32,12 @@ reservationsRouter.get(
   passport.authenticate("jwt", { session: false }),
   (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
   getReservationsByEmail
+);
+reservationsRouter.get(
+  "/dates/occupied",
+  passport.authenticate("jwt", { session: false }),
+  (req, res, next) => verifyRole(req, res, next, ["user", "admin"]),
+  getOccupiedDates
 );
 
 reservationsRouter.post(

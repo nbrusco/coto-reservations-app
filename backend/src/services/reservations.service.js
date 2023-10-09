@@ -64,6 +64,19 @@ export default class ReservationService {
     }
   }
 
+  async getOccupiedDates() {
+    try {
+      const reservations = await reservationDao.getReservations();
+      if (!reservations) throw new Error("No se encontraron reservas");
+
+      const occupiedDates = reservations.map(reservation => reservation.date);
+
+      return occupiedDates;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async appointReservation(reservation, email, name) {
     try {
       const code = uuidv4();

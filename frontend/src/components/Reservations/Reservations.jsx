@@ -15,10 +15,8 @@ import {
 } from "../../services/sweetalert2/swalCalls";
 
 const Reservations = ({ welcomeText, noReservationsText }) => {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [reservations, setReservations] = useState(null);
-
-  const authToken = localStorage.getItem("authToken") || "null";
 
   let fetchURL;
   user.role === "admin"
@@ -30,7 +28,7 @@ const Reservations = ({ welcomeText, noReservationsText }) => {
       const response = await fetch(fetchURL, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -45,7 +43,7 @@ const Reservations = ({ welcomeText, noReservationsText }) => {
       setReservations(null);
       errorSwal(error);
     }
-  }, [setReservations, fetchURL, authToken]);
+  }, [setReservations, fetchURL, token]);
 
   useEffect(() => {
     getReservationsByEmail();
@@ -76,13 +74,14 @@ const Reservations = ({ welcomeText, noReservationsText }) => {
   const editReservation = async (values) => {
     try {
       loadingSwal();
+      console.log(token)
       const response = await fetch(
         `http://localhost:8080/api/v1/reservations/${values._id}`,
         {
           method: "PUT",
           body: JSON.stringify(values),
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -110,7 +109,7 @@ const Reservations = ({ welcomeText, noReservationsText }) => {
           {
             method: "DELETE",
             headers: {
-              Authorization: `Bearer ${authToken}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
               "X-Reason": reason,
             },
