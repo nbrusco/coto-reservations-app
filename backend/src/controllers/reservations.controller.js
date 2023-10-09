@@ -127,6 +127,7 @@ export const updateReservation = async (req, res) => {
   try {
     const updateReserv = req.body;
     const updateId = req.params.rid;
+    const token = req.headers.authorization;
 
     if (!updateReserv || !updateId) {
       return res.status(400).send({
@@ -137,9 +138,13 @@ export const updateReservation = async (req, res) => {
 
     updateReserv?._id ? delete updateReserv._id : null
 
+    const { email, role } = await userService.decodeUser(token);
+
     const updatedReservation = await reservationService.updateReservation(
       updateId,
-      updateReserv
+      updateReserv,
+      email,
+      role
     );
 
     if (!updatedReservation) {
@@ -162,7 +167,15 @@ export const updateReservation = async (req, res) => {
 export const deleteReservation = async (req, res) => {
   try {
     const deleteId = req.params.rid;
-    const reason = req.headers['x-reason'];
+    const reason = req.headers["x-reason"];
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(400).send({
+        status: "error",
+        error: "Error al obtener token de autorización",
+      });
+    }
 
     if (!deleteId) {
       return res.status(400).send({
@@ -171,8 +184,13 @@ export const deleteReservation = async (req, res) => {
       });
     }
 
+    const { email, role } = await userService.decodeUser(token);
+
     const deletedReservation = await reservationService.deleteReservation(
-      deleteId, reason
+      deleteId,
+      reason,
+      email,
+      role
     );
 
     if (!deletedReservation || deletedReservation.deletedCount === 0) {

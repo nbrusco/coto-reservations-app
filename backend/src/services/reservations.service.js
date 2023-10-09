@@ -99,16 +99,21 @@ export default class ReservationService {
     }
   }
 
-  async updateReservation(updateId, newReservation) {
+  async updateReservation(updateId, newReservation, email, role) {
     try {
       const oldReservation = await reservationDao.getReservation(updateId);
       const oldFormattedDate = this.formatDate(oldReservation.date);
 
-      const dateAndTime = new Date(`${newReservation.date}T${newReservation.time}Z`);
+      const dateAndTime = new Date(
+        `${newReservation.date}T${newReservation.time}Z`
+      );
       newReservation.date = dateAndTime;
-      console.log(newReservation.date)
 
       const newFormattedDate = this.formatDate(newReservation.date);
+
+      if (role === "user" && email !== oldReservation.email) {
+        throw new Error("Solo puede editar sus propias reservaciones");
+      }
 
       const updatedReservation = await reservationDao.updateReservation(
         updateId,
@@ -124,7 +129,12 @@ export default class ReservationService {
       const mail = {
         to: oldReservation.email,
         subject: "Notificación de Modificación de Reserva en Z! Juegos",
-        html: emailTemplates.reservationUpdateEmail(oldReservation, newReservation, oldFormattedDate, newFormattedDate),
+        html: emailTemplates.reservationUpdateEmail(
+          oldReservation,
+          newReservation,
+          oldFormattedDate,
+          newFormattedDate
+        ),
       };
 
       await this.mailService.sendEmail(mail);
@@ -135,9 +145,13 @@ export default class ReservationService {
     }
   }
 
-  async deleteReservation(deleteId, reason) {
+  async deleteReservation(deleteId, reason, role, email) {
     try {
       const reservation = await reservationDao.getReservation(deleteId);
+
+      if (role === "user" && email !== reservation.email) {
+        throw new Error("Solo puede eliminar sus propias reservaciones");
+      }
 
       const deletedReservation = await reservationDao.deleteReservation(
         deleteId
@@ -153,7 +167,11 @@ export default class ReservationService {
       const mail = {
         to: reservation.email,
         subject: "Notificación de Eliminación de Reserva en Z! Juegos",
-        html: emailTemplates.reservationDeleteEmail(reservation, formattedDate, reason),
+        html: emailTemplates.reservationDeleteEmail(
+          reservation,
+          formattedDate,
+          reason
+        ),
       };
 
       await this.mailService.sendEmail(mail);
