@@ -8,8 +8,7 @@
 2. [Tecnologías utilizadas](#technologies-es)
 3. [Ejecutar localmente](#run-es)
 4. [Variables de entorno](#env-es)
-5. [Deploy](#deploy-es)
-6. [Autor](#author-es)
+5. [Autor](#author-es)
 
 <a name="description-es"></a>
 
@@ -59,16 +58,16 @@ Del lado del servidor, corre una API usando Node con el framework Express.JS, lo
 
 > Abrir una terminal y clonar el repositorio, dirigirse a la carpeta del frontend, instalar las dependencias y ejecutar
 ```bash
-$ git clone LINK AL REPOSITORIO.GIT
-$ cd coto-task/frontend
+$ git clone https://github.com/nbrusco/coto-reservations-app.git
+$ cd coto-reservations-app/frontend
 $ pnpm install
 $ pnpm run dev
 ```
 > Con el frontend en ejecución, abrir otra terminal y repetir los pasos para el Backend
 ```bash
-$ cd coto-task/backend
+$ cd coto-reservations-app/backend
+$ touch .env
 $ pnpm install
-$ pnpm run dev
 ```
 
 > El proyecto corre por defecto en el puerto 5137 para el frontend, en el backend, por defecto será el 8080 salvo se especifique en la variable de entorno.
@@ -89,21 +88,13 @@ EMAIL_PORT=""
 EMAIL_USER=""
 EMAIL_PASS=""
 ```
-> Deben colocarse en un archivo .env en la carpeta /backend
+> Deben colocarse en el archivo .env creado en la carpeta /backend
 
-#### Finalmente, ingresar a http://localhost:5173/
-
-<a name="deploy-es"></a>
-
-## 5. Deploy
-
-Para ver el proyecto en funcionamiento, ingresar al siguiente link:
-
-- [Coto-Task](LINK AL PROYECTO EN GLITCH)
+#### Finalmente, ejecutar *pnpm run dev* en la CLI del backend e ingresar a http://localhost:5173/
 
 <a name="author-es"></a>
 
-## 6. Autor
+## 5. Autor
 
 Nicolás Brusco | Desarrollador Web Fullstack / MERN
 
