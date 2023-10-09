@@ -42,7 +42,7 @@ const Navbar = () => {
           {user?.role === "admin" ? (
             <li>
               <NavLink to="/administracion" className="text-white">
-                Panel de adminitración
+                Panel de administración
               </NavLink>
             </li>
           ) : null}

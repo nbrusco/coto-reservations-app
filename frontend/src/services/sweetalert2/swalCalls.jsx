@@ -173,6 +173,8 @@ export const confirmDeletionSwal = async () => {
   const result = await Swal.fire({
     title: "¿Estás seguro?",
     text: "Esta acción no se puede deshacer.",
+    html: `<p>Esta acción no se puede deshacer.</p>
+    <input type="text" id="reason" class="swal2-input" placeholder="Razon...">`,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -183,8 +185,12 @@ export const confirmDeletionSwal = async () => {
       popup: "!text-slate-100 !bg-gray-900/90 !rounded-3xl",
       confirmButton: "!bg-violet-600 !px-5",
     },
+    preConfirm: () => {
+      const reason = Swal.getPopup().querySelector("#reason").value;
+      return { isConfirmed: true, reason };
+    },
   });
-  return result.isConfirmed;
+  return result.value;
 };
 
 export const deleteReservationSwal = () => {

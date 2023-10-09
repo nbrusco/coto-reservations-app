@@ -102,8 +102,8 @@ const Reservations = ({ welcomeText, noReservationsText }) => {
 
   const deleteReservation = async (id) => {
     try {
-      const result = await confirmDeletionSwal();
-      if (result) {
+      const { isConfirmed, reason } = await confirmDeletionSwal();
+      if (isConfirmed) {
         loadingSwal();
         const response = await fetch(
           `http://localhost:8080/api/v1/reservations/${id}`,
@@ -112,6 +112,7 @@ const Reservations = ({ welcomeText, noReservationsText }) => {
             headers: {
               Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
+              "X-Reason": reason,
             },
           }
         );

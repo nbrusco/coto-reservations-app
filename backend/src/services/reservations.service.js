@@ -135,7 +135,7 @@ export default class ReservationService {
     }
   }
 
-  async deleteReservation(deleteId) {
+  async deleteReservation(deleteId, reason) {
     try {
       const reservation = await reservationDao.getReservation(deleteId);
 
@@ -153,7 +153,7 @@ export default class ReservationService {
       const mail = {
         to: reservation.email,
         subject: "Notificación de Eliminación de Reserva en Z! Juegos",
-        html: emailTemplates.reservationDeleteEmail(reservation, formattedDate),
+        html: emailTemplates.reservationDeleteEmail(reservation, formattedDate, reason),
       };
 
       await this.mailService.sendEmail(mail);

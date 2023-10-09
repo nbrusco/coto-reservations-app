@@ -162,6 +162,7 @@ export const updateReservation = async (req, res) => {
 export const deleteReservation = async (req, res) => {
   try {
     const deleteId = req.params.rid;
+    const reason = req.headers['x-reason'];
 
     if (!deleteId) {
       return res.status(400).send({
@@ -171,7 +172,7 @@ export const deleteReservation = async (req, res) => {
     }
 
     const deletedReservation = await reservationService.deleteReservation(
-      deleteId
+      deleteId, reason
     );
 
     if (!deletedReservation || deletedReservation.deletedCount === 0) {

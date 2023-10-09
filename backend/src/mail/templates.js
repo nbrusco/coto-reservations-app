@@ -256,7 +256,7 @@ export const emailTemplates = {
     `,
   reservationDeleteEmail: (
     { name, email, type, code, guests, commentaries },
-    date
+    date, reason
   ) => `
   <!DOCTYPE html>
   <html>
@@ -287,6 +287,8 @@ export const emailTemplates = {
       Estimado ${name},
       <br><br>
       Te enviamos este correo para informarte que tu reserva en Z! Juegos fue cancelada. A continuación, te proporcionamos los detalles:
+        <br><br>
+        <b>- Motivo: ${reason}</b>
         <br><br>
         - Nombre: ${name}
         <br>
