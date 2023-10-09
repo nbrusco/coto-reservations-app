@@ -117,6 +117,11 @@ const ReservationForm = ({ submitFn, reservation, btnText }) => {
                 className={`border sm:text-sm rounded-lg w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white ${
                   touched.date && errors.date ? "border-red-500" : ""
                 }`}
+                onClick={(e) => {
+                  const selectedDate = e.target.value;
+                  values.date = selectedDate;
+                  values.time = "";
+                }}
               />
               {touched.date && errors.date ? (
                 <div className="text-red-500 text-xs mt-1 absolute">
@@ -140,7 +145,7 @@ const ReservationForm = ({ submitFn, reservation, btnText }) => {
                 }`}
                 required=""
               >
-                <option value="" disabled className="!text-slate-200">
+                <option value="" disabled>
                   Selecciona un horario
                 </option>
                 {timeOptions.map((value) => {
