@@ -1,42 +1,42 @@
-import passport from "passport";
-import local from "passport-local";
-import jwt from "passport-jwt";
+import passport from 'passport'
+import local from 'passport-local'
+import jwt from 'passport-jwt'
 
-import { userService } from "../services/services.js";
+import { userService } from '../services/services.js'
 
-import { createHash } from "../utils.js";
-import { config } from "../config/config.js";
+import { createHash } from '../utils.js'
+import { config } from '../config/config.js'
 
 const {
-  jwt: { JWT_SECRET },
-} = config;
+  jwt: { JWT_SECRET }
+} = config
 
-const LocalStrategy = local.Strategy;
-const JwtStrategy = jwt.Strategy;
-const extractJwt = jwt.ExtractJwt;
+const LocalStrategy = local.Strategy
+const JwtStrategy = jwt.Strategy
+const extractJwt = jwt.ExtractJwt
 
 const jwtOptions = {
   secretOrKey: JWT_SECRET,
   jwtFromRequest: extractJwt.fromAuthHeaderAsBearerToken()
-};
+}
 
 const initializePassport = () => {
   passport.use(
-    "register",
+    'register',
     new LocalStrategy(
       {
         passReqToCallback: true,
-        usernameField: "email",
+        usernameField: 'email'
       },
       async (req, username, password, done) => {
         try {
-          const { first_name, last_name, age } = req.body;
+          const { first_name, last_name, age } = req.body
 
-          const userExists = await userService.checkExistingUser(username);
+          const userExists = await userService.checkExistingUser(username)
 
           if (userExists) {
-            console.log("User already exists");
-            return done(null, false);
+            console.log('User already exists')
+            return done(null, false)
           }
 
           const newUser = {
@@ -44,29 +44,29 @@ const initializePassport = () => {
             last_name,
             email: username,
             age,
-            password: createHash(password),
-          };
+            password: createHash(password)
+          }
 
-          const result = await userService.registerUser(newUser);
+          const result = await userService.registerUser(newUser)
 
-          return done(null, result);
+          return done(null, result)
         } catch (error) {
-          return done(null, false);
+          return done(null, false)
         }
       }
     )
-  );
+  )
 
   passport.use(
-    "jwt",
+    'jwt',
     new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
       try {
-        return done(null, jwt_payload);
+        return done(null, jwt_payload)
       } catch (error) {
-        return done(error);
+        return done(error)
       }
     })
-  );
-};
+  )
+}
 
-export default initializePassport;
+export default initializePassport

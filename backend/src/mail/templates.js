@@ -161,7 +161,7 @@ export const emailTemplates = {
           <br>
           - Código de Reserva: ${code}
           <br>
-          - Comentarios: ${commentaries || "Ninguno"}
+          - Comentarios: ${commentaries || 'Ninguno'}
           <br><br>
           ¡Esperamos que tengas una experiencia increíble en Z! Juegos!
           <br><br>
@@ -228,9 +228,9 @@ export const emailTemplates = {
           <br>
           <b>- Nueva Cantidad de Invitados: ${newReservation.guests}</b>
           <br><br>
-          - Comentarios Originales: ${oldReservation.commentaries || "Ninguno"}
+          - Comentarios Originales: ${oldReservation.commentaries || 'Ninguno'}
           <br>
-          <b>- Nuevos Comentarios: ${newReservation.commentaries || "Ninguno"}</b>
+          <b>- Nuevos Comentarios: ${newReservation.commentaries || 'Ninguno'}</b>
           <br><br>
           Si tenes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nosotros.
           <br><br>
@@ -302,7 +302,7 @@ export const emailTemplates = {
         <br>
         - Código de Reserva: ${code}
         <br>
-        - Comentarios: ${commentaries || "Ninguno"}
+        - Comentarios: ${commentaries || 'Ninguno'}
         <br><br>
         Si tenes alguna pregunta o necesitás asistencia adicional, no dudes en ponerte en contacto con nosotros.
         <br><br>
@@ -325,5 +325,5 @@ export const emailTemplates = {
   </table>
   </body>
   </html>
-  `,
-};
+  `
+}

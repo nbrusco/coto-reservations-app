@@ -1,14 +1,14 @@
-import "./App.css";
+import './App.css'
 
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom'
 
-import AppRouter from "./routes/AppRouter";
-import NavBar from "./components/NavBar/NavBar";
-import Footer from "./components/Footer/Footer";
+import AppRouter from './routes/AppRouter'
+import NavBar from './components/NavBar/NavBar'
+import Footer from './components/Footer/Footer'
 
-import { AuthProvider } from "./components/context/AuthContext";
+import { AuthProvider } from './components/context/AuthContext'
 
-function App() {
+function App () {
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -17,7 +17,7 @@ function App() {
         <Footer />
       </AuthProvider>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,41 +1,41 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const reservationCollection = "Reservations";
+const reservationCollection = 'Reservations'
 
 const reservationSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
-    required: true,
+    required: true
   },
   date: {
     type: Date,
-    required: true,
+    required: true
   },
   createdAt: {
     type: Date,
-    required: true,
+    required: true
   },
   type: {
     type: String,
-    required: true,
+    required: true
   },
   guests: {
     type: Number,
-    required: true,
+    required: true
   },
   code: {
     type: String,
     unique: true,
     required: true
   },
-  commentaries: String,
-});
+  commentaries: String
+})
 
 export const reservationModel = mongoose.model(
   reservationCollection,
   reservationSchema
-);
+)

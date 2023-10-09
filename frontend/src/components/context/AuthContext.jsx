@@ -1,5 +1,5 @@
-import { useState, createContext, useEffect } from "react";
-import PropTypes from "prop-types";
+import { useState, createContext, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 import {
   loadingSwal,
@@ -8,190 +8,190 @@ import {
   logoutSwal,
   registerSwal,
   passRecoverySwal,
-  passUpdateSwal,
-} from "../../services/sweetalert2/swalCalls.jsx";
+  passUpdateSwal
+} from '../../services/sweetalert2/swalCalls.jsx'
 
-export const AuthContext = createContext();
+export const AuthContext = createContext()
 
-const authToken = localStorage.getItem("authToken") || null;
+const authToken = localStorage.getItem('authToken') || null
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(authToken);
+  const [user, setUser] = useState(null)
+  const [token, setToken] = useState(authToken)
 
   useEffect(() => {
     const checkTokenValidity = async () => {
-      if (token !== "null") {
-        const { status, payload } = await checkUser(token);
-        if (status === "success") {
-          const now = Math.floor(Date.now() / 1000);
+      if (token !== 'null') {
+        const { status, payload } = await checkUser(token)
+        if (status === 'success') {
+          const now = Math.floor(Date.now() / 1000)
           if (payload.exp > now) {
-            setUser(payload);
+            setUser(payload)
           } else {
-            setUser(null);
-            localStorage.setItem("authToken", "null");
+            setUser(null)
+            localStorage.setItem('authToken', 'null')
           }
         } else {
-          setUser(null);
-          localStorage.setItem("authToken", "null");
+          setUser(null)
+          localStorage.setItem('authToken', 'null')
         }
       } else {
-        setUser(null);
-        localStorage.setItem("authToken", "null");
+        setUser(null)
+        localStorage.setItem('authToken', 'null')
       }
-    };
+    }
 
-    checkTokenValidity();
-  }, [token]);
+    checkTokenValidity()
+  }, [token])
 
   const checkUser = async (token) => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/users/", {
-        method: "GET",
+      const response = await fetch('http://localhost:8080/api/v1/users/', {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json()
 
-      return data;
+      return data
     } catch ({ error }) {
-      errorSwal(error);
+      errorSwal(error)
     }
-  };
+  }
 
   const login = async (values) => {
     try {
-      loadingSwal();
-      const response = await fetch("http://localhost:8080/api/v1/users/login", {
-        method: "POST",
+      loadingSwal()
+      const response = await fetch('http://localhost:8080/api/v1/users/login', {
+        method: 'POST',
         body: JSON.stringify(values),
         headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json()
 
       if (response.ok) {
-        const { status, payload } = await checkUser(data.token);
+        const { status, payload } = await checkUser(data.token)
 
-        if (status === "success") {
-          setUser(payload);
-          setToken(data.token);
-          localStorage.setItem("authToken", data.token);
-          loginSwal();
+        if (status === 'success') {
+          setUser(payload)
+          setToken(data.token)
+          localStorage.setItem('authToken', data.token)
+          loginSwal()
         }
       } else {
-        throw data;
+        throw data
       }
     } catch ({ error }) {
-      errorSwal(error);
+      errorSwal(error)
     }
-  };
+  }
 
   const logout = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/v1/users/logout",
+        'http://localhost:8080/api/v1/users/logout',
         {
-          method: "GET",
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+            'Content-Type': 'application/json'
+          }
         }
-      );
+      )
 
       if (response.ok) {
-        setUser(null);
-        setToken(null);
-        localStorage.setItem("authToken", "null");
-        logoutSwal();
+        setUser(null)
+        setToken(null)
+        localStorage.setItem('authToken', 'null')
+        logoutSwal()
       }
     } catch ({ error }) {
-      errorSwal(error);
+      errorSwal(error)
     }
-  };
+  }
 
   const register = async (values) => {
     try {
-      loadingSwal();
+      loadingSwal()
       const response = await fetch(
-        "http://localhost:8080/api/v1/users/register",
+        'http://localhost:8080/api/v1/users/register',
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(values),
           headers: {
-            "Content-Type": "application/json",
-          },
+            'Content-Type': 'application/json'
+          }
         }
-      );
-      const data = await response.json();
+      )
+      const data = await response.json()
 
       if (response.ok) {
-        registerSwal();
+        registerSwal()
       } else {
-        throw data;
+        throw data
       }
     } catch ({ error }) {
-      errorSwal(error);
+      errorSwal(error)
     }
-  };
+  }
 
   const restorePass = async (values) => {
     try {
-      loadingSwal();
+      loadingSwal()
       const response = await fetch(
-        "http://localhost:8080/api/v1/users/restore",
+        'http://localhost:8080/api/v1/users/restore',
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(values),
           headers: {
-            "Content-Type": "application/json",
-          },
+            'Content-Type': 'application/json'
+          }
         }
-      );
-      const data = await response.json();
+      )
+      const data = await response.json()
 
       if (response.ok) {
-        passRecoverySwal();
+        passRecoverySwal()
       } else {
-        throw data;
+        throw data
       }
     } catch ({ error }) {
-      errorSwal(error);
+      errorSwal(error)
     }
-  };
+  }
 
   const resetPass = async (values) => {
     try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get("token");
-      values.token = token;
+      const urlParams = new URLSearchParams(window.location.search)
+      const token = urlParams.get('token')
+      values.token = token
 
-      loadingSwal();
+      loadingSwal()
       const response = await fetch(
-        "http://localhost:8080/api/v1/users/resetPassword",
+        'http://localhost:8080/api/v1/users/resetPassword',
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify(values),
           headers: {
-            "Content-Type": "application/json",
-          },
+            'Content-Type': 'application/json'
+          }
         }
-      );
-      const data = await response.json();
+      )
+      const data = await response.json()
 
       if (response.ok) {
-        passUpdateSwal();
+        passUpdateSwal()
       } else {
-        throw data;
+        throw data
       }
     } catch ({ error }) {
-      errorSwal(error);
+      errorSwal(error)
     }
-  };
+  }
 
   return (
     <AuthContext.Provider
@@ -202,14 +202,14 @@ export const AuthProvider = ({ children }) => {
         logout,
         register,
         restorePass,
-        resetPass,
+        resetPass
       }}
     >
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  children: PropTypes.node.isRequired
+}
